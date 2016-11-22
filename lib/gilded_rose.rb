@@ -5,14 +5,17 @@ require_relative 'brie'
 require_relative 'conjured'
 
 class GildedRose
-  attr_reader :name, :days_remaining, :quality
+  # attr_reader :name, :days_remaining, :quality
+
+  # def initialize(name, days_remaining, quality)
+  #   @name = name
+  #   @days_remaining = days_remaining
+  #   @quality = quality
+  # end
 
   def initialize(name, days_remaining, quality)
-    @name = name
-    @days_remaining = days_remaining
-    @quality = quality
+    @item = klass_for(name).new(quality,days_remaining)
   end
-
 
   # def tick
   #   # if @name == 'normal item'
@@ -63,35 +66,31 @@ class GildedRose
   #     end
   #   end
   # end
-
-  def tick 
-    case @name
+  def klass_for(name)
+    case name
     when 'normal item'
-      @item = Normal.new(@quality, @days_remaining)
-      @item.tick
+      Normal
     when 'Aged Brie'
-      @item = Brie.new(@quality , @days_remaining)
-      @item.tick
+      Brie
     when 'Sulfuras, Hand of Ragnaros'
-      @item = Sulfuras.new(@quality , @days_remaining)
-      @item.tick
+      Sulfuras
     when 'Backstage passes to a TAFKAL80ETC concert'
-      @item = Backstage.new(@quality , @days_remaining)
-      @item.tick
+      Backstage
     when 'Conjured Mana Cake'
-      @item = Conjured.new(@quality, @days_remaining)
-      @item.tick
+      Conjured
     end
   end
 
+  def tick 
+    @item.tick
+  end
+
   def quality
-    return @item.quality if @item
-    @quality
+    @item.quality
   end
 
   def days_remaining
-    return @item.days_remaining if @item
-    @days_remaining
+    @item.days_remaining
   end
 
 end

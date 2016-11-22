@@ -1,5 +1,9 @@
 require_relative 'normal'
-require 'byebug'
+require_relative 'sulfuras'
+require_relative 'backstage'
+require_relative 'brie'
+require_relative 'conjured'
+
 class GildedRose
   attr_reader :name, :days_remaining, :quality
 
@@ -63,50 +67,21 @@ class GildedRose
   def tick 
     case @name
     when 'normal item'
-      return normal_tick
+      @item = Normal.new(@quality, @days_remaining)
+      @item.tick
     when 'Aged Brie'
-      return brie_tick
+      @item = Brie.new(@quality , @days_remaining)
+      @item.tick
     when 'Sulfuras, Hand of Ragnaros'
-      return sulfuras_tick
+      @item = Sulfuras.new(@quality , @days_remaining)
+      @item.tick
     when 'Backstage passes to a TAFKAL80ETC concert'
-      return backstage_tick
+      @item = Backstage.new(@quality , @days_remaining)
+      @item.tick
     when 'Conjured Mana Cake'
-      return conjured_tick
+      @item = Conjured.new(@quality, @days_remaining)
+      @item.tick
     end
-  end
-
-  def sulfuras_tick
-
-  end
-
-  def backstage_tick
-    @days_remaining -= 1
-    return if @quality >= 50 
-    ## quality is 0 after sale date
-    return @quality = 0 if @days_remaining < 0
-
-    @quality += 1
-    @quality += 1 if @days_remaining < 10 
-    @quality += 1 if @days_remaining < 5 
-  end
-
-  def brie_tick
-    @days_remaining -= 1
-    return if @quality >= 50
-    @quality += 1
-    @quality += 1 if @days_remaining <= 0 && @quality < 50
-  end
-
-  def normal_tick
-    @item = Normal.new(@quality, @days_remaining)
-    @item.tick
-  end
-
-  def conjured_tick
-    @days_remaining -= 1
-    return if @quality == 0
-    @quality -= 2
-    @quality -= 2 if @days_remaining <= 0
   end
 
   def quality

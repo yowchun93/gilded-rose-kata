@@ -1,4 +1,4 @@
-class Backstage
+class Conjured
 
   attr_reader :quality, :days_remaining
 
